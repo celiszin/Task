@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, ImageBackground, TouchableOpacity } from "react-native"
+import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, FlatList } from "react-native"
 
 import Icon from "react-native-vector-icons/FontAwesome"
 
@@ -9,6 +9,33 @@ import todayImage from '../../assets/imgs/today.jpg'
 import Task from "../components/Task"
 
 export default function TaskList(){
+
+    const tasks = [
+        {
+            id: Math.random(),
+            desc: 'Elaborar o MER do TCC',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        },
+        {
+            id: Math.random(),
+            desc: 'Ajustar O Figma',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        },
+        {
+            id: Math.random(),
+            desc: 'Desenvolver o Backend do sistema',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        },
+        {
+            id: Math.random(),
+            desc: 'Desenvolver o Backend do sistema',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        }
+    ]
 
     const userTimeZone = moment.tz.guess(); // Detecta o fuso horario do dispositivo
     console.log(userTimeZone)
@@ -32,7 +59,11 @@ export default function TaskList(){
             </ImageBackground>
 
             <View style={styles.taskList}>
-                <Task />
+                <FlatList 
+                    data={tasks} 
+                    keyExtractor={item => `${item.id}`}
+                    renderItem={({item}) => <Task{...item}/>}
+                    />
             </View>
             
             <TouchableOpacity

@@ -3,6 +3,8 @@ import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native'
 import commonStyles from '../commonStyles'
 
 export default props => {
+
+    
     return(
         <View style={styles.container}>
             <TouchableWithoutFeedback onPress={() => console.log('oi')}>
@@ -11,8 +13,8 @@ export default props => {
                 </View>
             </TouchableWithoutFeedback>
             <View>
-                <Text style={styles.desc}>Elaborar o MER do projeto do TCC</Text>
-                <Text style={styles.date}>11/03/2025</Text>
+                <Text style={styles.desc}>{props.desc}</Text>
+                <Text style={styles.date}>{'${props.estimateAt}'}</Text>
             </View>
         </View>
     )
