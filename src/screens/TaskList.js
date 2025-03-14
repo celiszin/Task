@@ -25,6 +25,78 @@ export default function TaskList(){
         },
         {
             id: Math.random(),
+            desc: 'Ajustar O Figma',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        },
+        {
+            id: Math.random(),
+            desc: 'Ajustar O Figma',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        },
+        {
+            id: Math.random(),
+            desc: 'Ajustar O Figma',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        },
+        {
+            id: Math.random(),
+            desc: 'Ajustar O Figma',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        },
+        {
+            id: Math.random(),
+            desc: 'Ajustar O Figma',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        },
+        {
+            id: Math.random(),
+            desc: 'Ajustar O Figma',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        },
+        {
+            id: Math.random(),
+            desc: 'Ajustar O Figma',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        },
+        {
+            id: Math.random(),
+            desc: 'Ajustar O Figma',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        },
+        {
+            id: Math.random(),
+            desc: 'Ajustar O Figma',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        },
+        {
+            id: Math.random(),
+            desc: 'Ajustar O Figma',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        },
+        {
+            id: Math.random(),
+            desc: 'Ajustar O Figma',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        },
+        {
+            id: Math.random(),
+            desc: 'Ajustar O Figma',
+            estimateAt : new Date(),
+            doneAt: new Date()
+        },
+        {
+            id: Math.random(),
             desc: 'Desenvolver o Backend do sistema',
             estimateAt : new Date(),
             doneAt: new Date()
