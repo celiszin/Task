@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, FlatList } from "react-native"
 
 import Icon from "react-native-vector-icons/FontAwesome"
@@ -8,9 +9,8 @@ import 'moment/locale/pt-br'
 import todayImage from '../../assets/imgs/today.jpg'
 import Task from "../components/Task"
 
-export default function TaskList(){
 
-    const tasks = [
+const tasksDB = [
         {
             id: Math.random(),
             desc: 'Elaborar o MER do TCC',
@@ -25,105 +25,28 @@ export default function TaskList(){
         },
         {
             id: Math.random(),
-            desc: 'Ajustar O Figma',
-            estimateAt : new Date(),
-            doneAt: null
-        },
-        {
-            id: Math.random(),
-            desc: 'Ajustar O Figma',
-            estimateAt : new Date(),
-            doneAt: new Date()
-        },
-        {
-            id: Math.random(),
-            desc: 'Ajustar O Figma',
-            estimateAt : new Date(),
-            doneAt: null
-        },
-        {
-            id: Math.random(),
-            desc: 'Ajustar O Figma',
-            estimateAt : new Date(),
-            doneAt: new Date()
-        },
-        {
-            id: Math.random(),
-            desc: 'Ajustar O Figma',
-            estimateAt : new Date(),
-            doneAt: null
-        },
-        {
-            id: Math.random(),
-            desc: 'Ajustar O Figma',
-            estimateAt : new Date(),
-            doneAt: new Date()
-        },
-        {
-            id: Math.random(),
-            desc: 'Ajustar O Figma',
-            estimateAt : new Date(),
-            doneAt: null
-        },
-        {
-            id: Math.random(),
-            desc: 'Ajustar O Figma',
-            estimateAt : new Date(),
-            doneAt: new Date()
-        },
-        {
-            id: Math.random(),
-            desc: 'Ajustar O Figma',
-            estimateAt : new Date(),
-            doneAt: null
-        },
-        {
-            id: Math.random(),
-            desc: 'Ajustar O Figma',
-            estimateAt : new Date(),
-            doneAt: new Date()
-        },
-        {
-            id: Math.random(),
-            desc: 'Ajustar O Figma',
-            estimateAt : new Date(),
-            doneAt: null
-        },
-        {
-            id: Math.random(),
-            desc: 'Ajustar O Figma',
-            estimateAt : new Date(),
-            doneAt: new Date()
-        },
-        {
-            id: Math.random(),
-            desc: 'Desenvolver o Backend do sistema',
-            estimateAt : new Date(),
-            doneAt: null
-        },
-        {
-            id: Math.random(),
             desc: 'Desenvolver o Backend do sistema',
             estimateAt : new Date(),
             doneAt: new Date()
         }
     ]
+export default function TaskList(){
+
+    const[tasks, setTasks] = useState([...tasksDB])
 
     const userTimeZone = moment.tz.guess(); // Detecta o fuso horario do dispositivo
     console.log(userTimeZone)
     const today = moment().tz('America/Sao_Paulo').locale('pt-br').format('ddd, D [de] MMMM')
     // const today = moment().locale('pt-br').format('ddd, D [de] MMMM')
 
-    toggleTask = taskId => {
-        const taskList = [...task]
-        TaskList.forEach(task => {
-            if(task.Id === taskId) {
-                task.doneAt = task.doneAt ? null : new Date()
+    const toggleTask = taskId => {
+        const taskList = [...tasks]
+        taskList.forEach(task => {
+            if(task.id === taskId) {
+                task.doneAt = task.doneAt ? null : new Date() 
             }
         });
-
-
-        task = taskList 
+        setTasks(taskList) 
     }
 
     return(
@@ -146,7 +69,7 @@ export default function TaskList(){
                 <FlatList 
                     data={tasks} 
                     keyExtractor={item => `${item.id}`}
-                    renderItem={({item}) => <Task{...item}/>}
+                    renderItem={({item}) => <Task{...item} onToggleTask={toggleTask}/>}
                 />
             </View>
             
