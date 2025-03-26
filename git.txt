@@ -1,0 +1,2 @@
+git config --global --replace-all user.name celiszin
+git config --global user.email teste153ovo@gmail.com
