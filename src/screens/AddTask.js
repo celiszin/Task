@@ -1,19 +1,51 @@
 import { useState } from "react";
-import { Modal, Text, TextInput, TouchableWithoutFeedback, StyleSheet, View, TouchableOpacity} from "react-native";
+import { Modal, Text, TextInput, TouchableWithoutFeedback, StyleSheet, View, TouchableOpacity, Platform } from "react-native";
 import commonStyles from "../commonStyles";
 
-export default function AddTask(props){
+import moment from "moment";
+import DateTimePicker from "@react-native-community/datetimepicker";
+
+
+export default function AddTask(props) {
 
     const [desc, setDesc] = useState("")
+    const [date, setDate] = useState(new Date())
+    const [showDataPicker, setShowDatePicker] = useState(new Date())
 
-    return(
+    const getDataPicker = () => {
+        let datePicker = <DateTimePicker value={date}
+            onChange={(_, date) => {
+                showDate(date)
+                setShowDatePicker(false)
+            }}
+            mode='date'
+        />
+
+        const dateString = moment(date).format('ddd, D [de] MMMMM [de] YYYY')
+
+        if (Platform.OS === 'android') {
+            datePicker = (
+                <View>
+                    <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                        <Text style={styles.date}>
+                            {dateString}
+                        </Text>
+                    </TouchableOpacity>
+                    {showDataPicker && datePicker}
+                </View>
+            )
+        }
+        return datePicker
+    }
+
+    return (
         <Modal transparent={true}
-         visible={props.isVisible}
-         onRequestClose={props.onCancel}
-         animationType="slide">
+            visible={props.isVisible}
+            onRequestClose={props.onCancel}
+            animationType="slide">
 
-            <TouchableWithoutFeedback 
-            onPress={props.onCancel}>
+            <TouchableWithoutFeedback
+                onPress={props.onCancel}>
 
                 <View style={styles.background}></View>
             </TouchableWithoutFeedback>
@@ -23,8 +55,10 @@ export default function AddTask(props){
                     style={styles.input}
                     placeholder="Informe a Descrição"
                     onChangeText={setDesc}
-                    value={desc}/>
-
+                    value={desc} />
+                
+                {this.getDataPicker()}
+                
                 <View style={styles.buttons}>
                     <TouchableOpacity onPress={props.onCancel}>
                         <Text style={styles.button}>Cancelar</Text>
@@ -36,8 +70,8 @@ export default function AddTask(props){
 
                 </View>
             </View>
-            <TouchableWithoutFeedback 
-            onPress={props.onCancel}>
+            <TouchableWithoutFeedback
+                onPress={props.onCancel}>
 
                 <View style={styles.background}></View>
             </TouchableWithoutFeedback>
@@ -46,34 +80,34 @@ export default function AddTask(props){
 }
 
 const styles = StyleSheet.create({
-    background : {
+    background: {
         flex: 1,
-        backgroundColor : 'rgba(0,0,0,0.7)'
+        backgroundColor: 'rgba(0,0,0,0.7)'
     },
-    container : {
-        backgroundColor : '#fff',
-        flex : 1
+    container: {
+        backgroundColor: '#fff',
+        flex: 1
     },
-    header:{
+    header: {
         backgroundColor: commonStyles.colors.today,
-        color : commonStyles.colors.secondary,
+        color: commonStyles.colors.secondary,
         textAlign: 'center',
         padding: 15,
         fontSize: 18
     },
-    input:{
+    input: {
         height: 40,
         margin: 15,
         backgroundColor: "#fff",
         borderWidth: 1,
         borderColor: '#e3e3e3',
-        borderRadius: 6    
+        borderRadius: 6
     },
     button: {
         flexDirection: 'row',
         justifyContent: 'flex-end'
     },
-    button:{
+    button: {
         margin: 20,
         marginRight: 30,
         color: commonStyles.colors.today
