@@ -44,7 +44,7 @@ export default function TaskList() {
 
     useEffect(() => {
         filterTasks()
-    }, [showDoneTasks])
+    }, [showDoneTasks, tasks])
 
     const toggleTask = taskId => {
         const taskList = [...tasks]
@@ -89,7 +89,7 @@ export default function TaskList() {
         })
         setTasks(tempTasks)
         setShowAddTask(false)
-        
+
     }
 
     return (
