@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, FlatList} from "react-native"
+import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, FlatList } from "react-native"
 
 import Icon from "react-native-vector-icons/FontAwesome"
 
@@ -13,28 +13,28 @@ import AddTask from "./AddTask"
 
 
 const tasksDB = [
-        {
-            id: Math.random(),
-            desc: 'Elaborar o MER do TCC',
-            estimateAt : new Date(),
-            doneAt: null
-        },
-        {
-            id: Math.random(),
-            desc: 'Ajustar O Figma',
-            estimateAt : new Date(),
-            doneAt: new Date()
-        },
-        {
-            id: Math.random(),
-            desc: 'Desenvolver o Backend do sistema',
-            estimateAt : new Date(),
-            doneAt: new Date()
-        }
-    ]
-export default function TaskList(){
+    {
+        id: Math.random(),
+        desc: 'Elaborar o MER do TCC',
+        estimateAt: new Date(),
+        doneAt: null
+    },
+    {
+        id: Math.random(),
+        desc: 'Ajustar O Figma',
+        estimateAt: new Date(),
+        doneAt: new Date()
+    },
+    {
+        id: Math.random(),
+        desc: 'Desenvolver o Backend do sistema',
+        estimateAt: new Date(),
+        doneAt: new Date()
+    }
+]
+export default function TaskList() {
 
-    const[tasks, setTasks] = useState([...tasksDB])
+    const [tasks, setTasks] = useState([...tasksDB])
     const [showDoneTasks, setShowDoneTask] = useState(true)
     const [visibleTasks, setVisibleTasks] = useState([...tasks])
     const [showAddTask, setShowAddTask] = useState(false)
@@ -49,11 +49,11 @@ export default function TaskList(){
     const toggleTask = taskId => {
         const taskList = [...tasks]
         taskList.forEach(task => {
-            if(task.id === taskId) {
-                task.doneAt = task.doneAt ? null : new Date() 
+            if (task.id === taskId) {
+                task.doneAt = task.doneAt ? null : new Date()
             }
         });
-        setTasks(taskList) 
+        setTasks(taskList)
         filterTasks()
     }
 
@@ -63,8 +63,8 @@ export default function TaskList(){
 
     const filterTasks = () => {
         let visibleTask = null
-        
-        if(showDoneTasks){
+
+        if (showDoneTasks) {
             visibleTask = [...tasks]
         } else {
             const pending = task => task.doneAt === null
@@ -75,16 +75,33 @@ export default function TaskList(){
 
     }
 
-    return(
+    const addTask = newTask => {
+        if (!newTask.desc || !newTask.desc.trim()) {
+            Alert.alert('Dados Invalidos', 'Descrição não informada!')
+        }
+
+        const tempTasks = [...]
+        tempTasks.push({
+            id: newTask.random(),
+            desc: newTask.desc,
+            estimateAt: newTask.date,
+            doneAt: null
+        })
+        setTasks(tempTasks)
+        setShowAddTask(false)
+        
+    }
+
+    return (
         <View style={styles.container}>
 
-            <AddTask isVisible={showAddTask} 
-                onCancel={() => setShowAddTask(false)}/>
+            <AddTask isVisible={showAddTask}
+                onCancel={() => setShowAddTask(false)} />
 
             <ImageBackground source={todayImage} style={styles.background}>
                 <View style={styles.iconBar}>
                     <TouchableOpacity onPress={toggleFilter}>
-                        <Icon name={showDoneTasks ? 'eye' : 'eye-slash'} size={20} color={'#fff'}/>
+                        <Icon name={showDoneTasks ? 'eye' : 'eye-slash'} size={20} color={'#fff'} />
                     </TouchableOpacity>
                 </View>
 
@@ -95,13 +112,13 @@ export default function TaskList(){
             </ImageBackground>
 
             <View style={styles.taskList}>
-                <FlatList 
-                    data={visibleTasks} 
+                <FlatList
+                    data={visibleTasks}
                     keyExtractor={item => `${item.id}`}
-                    renderItem={({item}) => <Task{...item} onToggleTask={toggleTask}/>}
+                    renderItem={({ item }) => <Task{...item} onToggleTask={toggleTask} />}
                 />
             </View>
-            
+
             <TouchableOpacity
                 style={styles.addButton}
                 activeOpacity={0.7}
