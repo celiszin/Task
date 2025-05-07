@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, FlatList } from "react-native"
+import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, FlatList} from "react-native"
 
 import Icon from "react-native-vector-icons/FontAwesome"
 
