@@ -50,7 +50,7 @@ export default function AddTask(props) {
                 />
 
                 {/* Date Picker para Android (mostrado somente ao clicar) */}
-                {Platform.OS === 'android' && (
+                {/*Platform.OS === 'android' && ( */}
                     <View>
                         <TouchableOpacity onPress={() => setShowDatePicker(true)}>
                             <Text style={styles.date}>{formattedDate}</Text>
@@ -64,7 +64,7 @@ export default function AddTask(props) {
                             />
                         )}
                     </View>
-                )}
+                {/*})} */}
 
                 {/* Date Picker para iOS (sempre visível) */}
                 {Platform.OS === 'ios' && (

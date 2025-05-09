@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, FlatList } from "react-native"
+import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, FlatList, Alert} from "react-native"
 
 import Icon from "react-native-vector-icons/FontAwesome"
 
@@ -8,7 +8,6 @@ import 'moment/locale/pt-br'
 
 import todayImage from '../../assets/imgs/today.jpg'
 import Task from "../components/Task"
-import { ToggleButton } from "react-native-paper"
 import AddTask from "./AddTask"
 
 
@@ -80,7 +79,7 @@ export default function TaskList() {
             Alert.alert('Dados Invalidos', 'Descrição não informada!')
         }
 
-        const tempTasks = [...]
+        const tempTasks = [...tasks]
         tempTasks.push({
             id: newTask.random(),
             desc: newTask.desc,
@@ -96,7 +95,8 @@ export default function TaskList() {
         <View style={styles.container}>
 
             <AddTask isVisible={showAddTask}
-                onCancel={() => setShowAddTask(false)} />
+                onCancel={() => setShowAddTask(false)} 
+                onSave={addTask}/>
 
             <ImageBackground source={todayImage} style={styles.background}>
                 <View style={styles.iconBar}>
