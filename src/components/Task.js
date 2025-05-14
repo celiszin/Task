@@ -1,10 +1,10 @@
-import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native'
+import {View, Text, StyleSheet, TouchableWithoutFeedback, TouchableOpacity} from 'react-native'
 import moment from 'moment-timezone'
 import 'moment/locale/pt-br' 
 
 import commonStyles from '../commonStyles'
 import Icon from "react-native-vector-icons/FontAwesome"
-
+import { Swipeable } from 'react-native-gesture-handler'
 export default props => {
 
     const date = props.doneAt ? props.doneAt : props.estimateAt
@@ -12,7 +12,18 @@ export default props => {
 
     const doneOrNotStyle = props.doneAt != null ? {textDecorationLine: 'line-through'} : {}
     
+    const getRightContent = () => {
+        return(
+            <TouchableOpacity 
+            style={styles.right}
+            onPress={() => props.onDelete && props.onDelete(props.id)}>
+            <Icon name='trash' size={30} color='#fff' />
+            </TouchableOpacity>
+        )      
+    }
+
     return(
+        <Swipeable renderRightActions={getRightContent}>
         <View style={styles.container}>
             <TouchableWithoutFeedback onPress={() => props.onToggleTask(props.id)}>
                 <View style={styles.checkContainer}>
@@ -24,6 +35,7 @@ export default props => {
                 <Text style={styles.date}>{`${formattedDate}`}</Text>
             </View>
         </View>
+    </Swipeable>
     )
 }
 
@@ -82,5 +94,12 @@ const styles = StyleSheet.create({
     date: {
         color: '#555',
         fontSize: 12
+    },
+    right : {
+        backgroundColor:'red',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        paddingHorizontal: 20
     }
 })
