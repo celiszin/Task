@@ -6,6 +6,7 @@ import Icon from "react-native-vector-icons/FontAwesome"
 import moment from "moment-timezone"
 import 'moment/locale/pt-br'
 
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import todayImage from '../../assets/imgs/today.jpg'
 import Task from "../components/Task"
 import AddTask from "./AddTask"
@@ -45,6 +46,16 @@ export default function TaskList() {
         filterTasks()
     }, [showDoneTasks, tasks])
 
+    useEffect(() => {
+        async function getTasks(){
+            const tasksString = await AsyncStorage.getItem('tasksState')
+            const tasks = JSON.parse(tasksString) || tasksDB
+            setTasks(tasks)
+        }
+
+        getTasks()
+    })
+
     const toggleTask = taskId => {
         const taskList = [...tasks]
         taskList.forEach(task => {
@@ -69,7 +80,7 @@ export default function TaskList() {
             const pending = task => task.doneAt === null
             visibleTask = tasks.filter(pending)
         }
-
+        AsyncStorage.setItem('taskState', JSON.stringify(tasks))
         setVisibleTasks(visibleTask)
 
     }
@@ -81,11 +92,12 @@ export default function TaskList() {
 
         const tempTasks = [...tasks]
         tempTasks.push({
-            id: newTask.random(),
+            id: Math.random(),
             desc: newTask.desc,
             estimateAt: newTask.date,
             doneAt: null
         })
+     
         setTasks(tempTasks)
         setShowAddTask(false)
 
