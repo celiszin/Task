@@ -34,7 +34,7 @@ const tasksDB = [
 ]
 export default function TaskList() {
 
-    const [tasks, setTasks] = useState([...tasksDB])
+    const [tasks, setTasks] = useState([])
     const [showDoneTasks, setShowDoneTask] = useState(true)
     const [visibleTasks, setVisibleTasks] = useState([...tasks])
     const [showAddTask, setShowAddTask] = useState(false)
@@ -42,9 +42,22 @@ export default function TaskList() {
     const userTimeZone = moment.tz.guess(); // Detecta o fuso horario do dispositivo
     const today = moment().tz('America/Sao_Paulo').locale('pt-br').format('ddd, D [de] MMMM')
 
+    const [contador, setContador] = useState(0)
+
+
+    useEffect(() => {
+        setContador(contador + 1)
+
+        if(contador == 0){
+            getTasks()
+        }
+
+        filterTasks()
+    }, [showDoneTasks])
+
     useEffect(() => {
         filterTasks()
-    }, [showDoneTasks, tasks])
+    }), [tasks]
 
     useEffect(() => {
         async function getTasks(){
@@ -101,12 +114,15 @@ export default function TaskList() {
         setTasks(tempTasks)
         setShowAddTask(false)
 
+        AsyncStorage.setItem('taskState', JSON.stringify(tempTasks))
+
     }
 
     const deleteTask = id =>{
         const tempTasks = tasks.filter(task => task.id !== id)
-
         setTasks(tempTasks)
+
+        AsyncStorage.setItem('taskState', JSON.stringify(tempTasks))
     }
 
     return (
