@@ -1,27 +1,25 @@
 import { useEffect, useState } from "react"
-import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, FlatList, Alert} from "react-native"
+import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, FlatList, Alert } from "react-native"
 
 import Icon from "react-native-vector-icons/FontAwesome"
-
 import moment from "moment-timezone"
 import 'moment/locale/pt-br'
-
 import AsyncStorage from "@react-native-async-storage/async-storage"
+
 import todayImage from '../../assets/imgs/today.jpg'
 import Task from "../components/Task"
 import AddTask from "./AddTask"
 
-
-const tasksDB = [
+const taskDB = [
     {
         id: Math.random(),
         desc: 'Elaborar o MER do TCC',
         estimateAt: new Date(),
-        doneAt: null
+        doneAt: new Date()
     },
     {
         id: Math.random(),
-        desc: 'Ajustar O Figma',
+        desc: 'Ajustar o FIGMA',
         estimateAt: new Date(),
         doneAt: new Date()
     },
@@ -29,25 +27,26 @@ const tasksDB = [
         id: Math.random(),
         desc: 'Desenvolver o Backend do sistema',
         estimateAt: new Date(),
-        doneAt: new Date()
+        doneAt: null
     }
 ]
+
 export default function TaskList() {
 
+    // const [tasks, setTasks] = useState([...taskDB])
     const [tasks, setTasks] = useState([])
-    const [showDoneTasks, setShowDoneTask] = useState(true)
+    const [showDoneTasks, setShowDoneTasks] = useState(true)
     const [visibleTasks, setVisibleTasks] = useState([...tasks])
     const [showAddTask, setShowAddTask] = useState(false)
-
+    
     const userTimeZone = moment.tz.guess(); // Detecta o fuso horario do dispositivo
     const today = moment().tz('America/Sao_Paulo').locale('pt-br').format('ddd, D [de] MMMM')
 
     const [contador, setContador] = useState(0)
 
-
     useEffect(() => {
         setContador(contador + 1)
-
+        
         if(contador == 0){
             getTasks()
         }
@@ -57,18 +56,14 @@ export default function TaskList() {
 
     useEffect(() => {
         filterTasks()
-    }), [tasks]
+    }, [tasks])
 
-    useEffect(() => {
-        async function getTasks(){
-            const tasksString = await AsyncStorage.getItem('tasksState')
-            const tasks = JSON.parse(tasksString) || tasksDB
-            setTasks(tasks)
-        }
-
-        getTasks()
-    })
-
+    async function getTasks() {
+        const tasksString = await AsyncStorage.getItem('tasksState')
+        const tasks = tasksString && JSON.parse(tasksString) || taskDB
+        setTasks(tasks)
+    }
+    
     const toggleTask = taskId => {
         const taskList = [...tasks]
         taskList.forEach(task => {
@@ -76,31 +71,33 @@ export default function TaskList() {
                 task.doneAt = task.doneAt ? null : new Date()
             }
         });
+
         setTasks(taskList)
         filterTasks()
     }
 
     const toggleFilter = () => {
-        setShowDoneTask(!showDoneTasks)
+        setShowDoneTasks(!showDoneTasks)
     }
 
     const filterTasks = () => {
-        let visibleTask = null
+      
+        let visibleTasks = null
 
-        if (showDoneTasks) {
-            visibleTask = [...tasks]
+        if(showDoneTasks){
+            visibleTasks = [...tasks]
+
         } else {
             const pending = task => task.doneAt === null
-            visibleTask = tasks.filter(pending)
+            visibleTasks = tasks.filter(pending)
         }
-        AsyncStorage.setItem('taskState', JSON.stringify(tasks))
-        setVisibleTasks(visibleTask)
 
+        setVisibleTasks(visibleTasks)
     }
 
     const addTask = newTask => {
-        if (!newTask.desc || !newTask.desc.trim()) {
-            Alert.alert('Dados Invalidos', 'Descrição não informada!')
+        if(!newTask.desc || !newTask.desc.trim()){
+            Alert.alert('Dados Inválidos', 'Descrição não informada!')
         }
 
         const tempTasks = [...tasks]
@@ -110,27 +107,26 @@ export default function TaskList() {
             estimateAt: newTask.date,
             doneAt: null
         })
-     
         setTasks(tempTasks)
         setShowAddTask(false)
 
-        AsyncStorage.setItem('taskState', JSON.stringify(tempTasks))
-
+        AsyncStorage.setItem('tasksState', JSON.stringify(tempTasks))
     }
-
-    const deleteTask = id =>{
+    
+    const deleteTask = id => {
         const tempTasks = tasks.filter(task => task.id !== id)
         setTasks(tempTasks)
-
-        AsyncStorage.setItem('taskState', JSON.stringify(tempTasks))
+        
+        AsyncStorage.setItem('tasksState', JSON.stringify(tempTasks))
     }
 
     return (
         <View style={styles.container}>
 
-            <AddTask isVisible={showAddTask}
+            <AddTask isVisible={showAddTask} 
                 onCancel={() => setShowAddTask(false)} 
-                onSave={addTask}/>
+                onSave={addTask}
+                />
 
             <ImageBackground source={todayImage} style={styles.background}>
                 <View style={styles.iconBar}>
@@ -150,8 +146,8 @@ export default function TaskList() {
                     data={visibleTasks}
                     keyExtractor={item => `${item.id}`}
                     renderItem={({ item }) => 
-                    <Task{...item} onToggleTask={toggleTask} onDelete={deleteTask} />
-                }
+                        <Task {...item} onToggleTask={toggleTask} onDelete={deleteTask} />
+                    }
                 />
             </View>
 
